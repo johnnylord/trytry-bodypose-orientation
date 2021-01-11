@@ -1,6 +1,7 @@
 import os
 import os.path as osp
 import sys
+sys.path.insert(0, osp.dirname(osp.dirname((osp.abspath(__file__)))))
 
 import argparse
 import io
@@ -15,6 +16,7 @@ import service.object_detection_pb2_grpc as object_detection_pb2_grpc
 import service.pose_estimation_pb2_grpc as pose_estimation_pb2_grpc
 from utils.convert import pil_to_bytes
 from utils.assign import match_bbox_keypoint
+from utils.transform import scale_bboxes_coord, scale_keypoints_coord
 
 
 # Global environment
@@ -76,7 +78,10 @@ def main(args):
             # Filter out person bbox
             bboxes = np.array([ (bbox.xmin, bbox.ymin, bbox.xmax, bbox.ymax, bbox.conf)
                                 for bbox in response.bboxes
-                                if bbox.label == 'person' ])
+                                if (
+                                    bbox.label == 'person'
+                                    and bbox.ymax-bbox.ymin > 100
+                                )])
 
             # Perform pose estimation
             # ================================================================
@@ -117,7 +122,7 @@ def main(args):
                 bbox = bodypose[:5]
                 keypoints = bodypose[5:].reshape(25, 3)
                 xmin, ymin, xmax, ymax, conf = bbox.tolist()
-                patch = frame[ymin:ymax, xmin:xmax, :]
+                patch = frame[int(ymin):int(ymax), int(xmin):int(xmax), :]
                 patches.append(patch)
                 patch_keypoints.append(keypoints)
 
