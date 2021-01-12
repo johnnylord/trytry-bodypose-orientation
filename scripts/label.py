@@ -92,7 +92,8 @@ def main(args):
             labels[osp.basename(ifile)] = label
 
     # Export label data (orient.csv)
-    df = pd.DataFrame({ 'label': labels.values() }, index=labels.keys())
+    df = pd.DataFrame({ 'filename': labels.keys(),
+                        'label': labels.values() })
     df.to_csv(args['output'])
     print("Save label data to '{}'".format(args['output']))
 
