@@ -1,0 +1,31 @@
+---
+
+agent: OrientAgent
+
+train:
+  device: "cuda:0"
+  n_epochs: 100
+  n_patients: 3
+  log_interval: 10
+  logdir: "run"
+  exp_name: "orient"
+  resume: false
+
+dataset:
+  train:
+    root: "download/orient"
+  valid:
+    root: "download/orient"
+  size: [256, 128]
+
+dataloader:
+  batch_size: 4
+  num_workers: 1
+
+model:
+  n_keypoints: 25
+  n_orients: 8
+
+optimizer:
+  lr: 0.001
+
