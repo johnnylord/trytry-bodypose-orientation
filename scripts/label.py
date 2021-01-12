@@ -93,7 +93,7 @@ def main(args):
 
     # Export label data (orient.csv)
     df = pd.DataFrame({ 'filename': labels.keys(),
-                        'label': labels.values() })
+                        'label': labels.values() }, index=False)
     df.to_csv(args['output'])
     print("Save label data to '{}'".format(args['output']))
 
