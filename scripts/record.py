@@ -122,6 +122,8 @@ def main(args):
                 bbox = bodypose[:5]
                 keypoints = bodypose[5:].reshape(25, 3)
                 xmin, ymin, xmax, ymax, conf = bbox.tolist()
+                keypoints[:, 0] -= xmin
+                keypoints[:, 1] -= ymin
                 patch = frame[int(ymin):int(ymax), int(xmin):int(xmax), :]
                 patches.append(patch)
                 patch_keypoints.append(keypoints)

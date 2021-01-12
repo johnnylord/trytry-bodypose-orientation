@@ -1,5 +1,5 @@
 .ipynb_checkpoint/
 __pycache__/
-output/
-
-*.mp4
+resource/*
+download/*
+!**/.gitkeep
